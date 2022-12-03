@@ -13,8 +13,7 @@ const (
 	errFmt  = "ambiguous data at line %d"
 )
 
-type DataFrame []string
-type DataSet map[string]DataFrame
+type DataSet map[string][]string
 
 func Decode(buf []byte) (DataSet, error) {
 	lns := strings.Split(string(buf), tokLn)
@@ -25,7 +24,7 @@ func Decode(buf []byte) (DataSet, error) {
 		if len(rln) < 2 {
 			return nil, fmt.Errorf(errFmt, i)
 		}
-		df := DataFrame(strings.Split(strings.Join(rln[1:], ""), tokSep))
+		df := []string(strings.Split(strings.Join(rln[1:], ""), tokSep))
 		ds[rln[0]] = df
 	}
 	return ds, nil

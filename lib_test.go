@@ -16,7 +16,7 @@ func TestDecode(t *testing.T) {
 func TestDecodeFail(t *testing.T) {
 	data := "foo=bar;baz\nos=windows\ntext=lorem;ipsum=lmao\n"
 	if _, err := Decode([]byte(data)); err == nil {
-		t.Fatal("This functions should fail!\n")
+		t.Fatal("This functions should have failed!\n")
 	} else {
 		t.Log(err)
 	}
@@ -24,9 +24,9 @@ func TestDecodeFail(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	data := DataSet{
-		"foo":  DataFrame{"bar", "baz"},
-		"os":   DataFrame{"plan9"},
-		"text": DataFrame{"lorem", "ipsum"},
+		"foo":  []string{"bar", "baz"},
+		"os":   []string{"plan9"},
+		"text": []string{"lorem", "ipsum"},
 	}
 	str := string(Encode(data))
 	t.Logf("%s\n", str)
