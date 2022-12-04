@@ -1,6 +1,7 @@
 package lib1n
 
 // Return new dataset, where old dataset matched
+// Warning: Concurrent function
 func Find(ds DataSet, pattern string) DataSet {
 	type result struct {
 		key string
@@ -40,6 +41,7 @@ func Find(ds DataSet, pattern string) DataSet {
 }
 
 // Return new dataset, where old values are replaced
+// Warning: Concurrent function
 func Replace(ds DataSet, pattern string, replace string) DataSet {
 	type result struct {
 		key string
@@ -71,4 +73,12 @@ func Replace(ds DataSet, pattern string, replace string) DataSet {
 	}
 
 	return nds
+}
+
+// Execute function on each dataframe
+func Map(ds DataSet, fn func(df []string) []string) DataSet {
+	for key, val := range ds {
+		ds[key] = fn(val)
+	}
+	return ds
 }
