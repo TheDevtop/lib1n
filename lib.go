@@ -7,10 +7,10 @@ import (
 
 const (
 	tokLn   = "\n"
-	tokKey  = "="
+	tokEq   = "="
 	tokSep  = ";"
 	dataFmt = "%s=%s\n"
-	errFmt  = "ambiguous data at line %d"
+	errFmt  = "ambiguous tokens at index %d"
 )
 
 type DataSet map[string][]string
@@ -20,12 +20,15 @@ func Decode(buf []byte) (DataSet, error) {
 	ds := make(DataSet, len(lns))
 
 	for i, ln := range lns {
-		rln := strings.Split(ln, tokKey)
-		if len(rln) < 2 {
-			return nil, fmt.Errorf(errFmt, i)
+		if ln == "" {
+			continue
 		}
-		df := []string(strings.Split(strings.Join(rln[1:], ""), tokSep))
-		ds[rln[0]] = df
+		if eqLn := strings.Split(ln, tokEq); len(eqLn) < 2 {
+			return nil, fmt.Errorf(errFmt, i)
+		} else {
+			df := []string(strings.Split(strings.Join(eqLn[1:], ""), tokSep))
+			ds[eqLn[0]] = df
+		}
 	}
 	return ds, nil
 }

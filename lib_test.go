@@ -14,11 +14,10 @@ func TestDecode(t *testing.T) {
 }
 
 func TestDecodeFail(t *testing.T) {
-	data := "foo=bar;baz\nos=windows\ntext=lorem;ipsum=lmao\n"
-	if _, err := Decode([]byte(data)); err == nil {
+	data := "foo=bar;baz\nos=windows\ntext\nlorem=ipsum\n"
+	if ds, err := Decode([]byte(data)); err == nil {
+		t.Logf("ds: %v\n", ds)
 		t.Fatal("This functions should have failed!\n")
-	} else {
-		t.Log(err)
 	}
 }
 
