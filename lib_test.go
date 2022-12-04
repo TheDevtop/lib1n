@@ -31,3 +31,20 @@ func TestEncode(t *testing.T) {
 	str := string(Encode(data))
 	t.Logf("%s\n", str)
 }
+
+func TestComplete(t *testing.T) {
+	data := DataSet{
+		"foo":  []string{"bar", "baz"},
+		"os":   []string{"plan9"},
+		"text": []string{"lorem", "ipsum"},
+	}
+
+	buf := Encode(data)
+	t.Log("Encoded dataset\n")
+
+	if data, err := Decode(buf); err != nil {
+		t.Fatal(err)
+	} else {
+		t.Logf("%v\n", data)
+	}
+}
