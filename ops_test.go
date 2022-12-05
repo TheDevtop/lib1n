@@ -75,3 +75,24 @@ func TestMap(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestClean(t *testing.T) {
+	ds := DataSet{
+		"0":  {"X", "O", "O"},
+		"1":  {"O", "X;", "O"},
+		"2=": {"O", "O", "X"},
+	}
+
+	nds := Clean(ds)
+
+	check0 := nds["0"][0] == "X"
+	check1 := nds["1"][1] == "X"
+	check2 := nds["2"][2] == "X"
+
+	if check0 && check1 && check2 {
+		t.Log("Cleaned succesfully")
+		return
+	} else {
+		t.Fail()
+	}
+}

@@ -1,5 +1,7 @@
 package lib1n
 
+import "strings"
+
 // Return new dataset, where old dataset matched
 // Warning: Concurrent function
 func Find(ds DataSet, pattern string) DataSet {
@@ -79,6 +81,22 @@ func Replace(ds DataSet, pattern string, replace string) DataSet {
 func Map(ds DataSet, fn func(df []string) []string) DataSet {
 	for key, val := range ds {
 		ds[key] = fn(val)
+	}
+	return ds
+}
+
+// Clean unwanted tokens
+func Clean(ds DataSet) DataSet {
+	for key, vals := range ds {
+		key = strings.ReplaceAll(key, tokEq, "")
+		key = strings.ReplaceAll(key, tokLn, "")
+		key = strings.ReplaceAll(key, tokSep, "")
+		for i, val := range vals {
+			vals[i] = strings.ReplaceAll(val, tokEq, "")
+			vals[i] = strings.ReplaceAll(val, tokLn, "")
+			vals[i] = strings.ReplaceAll(val, tokSep, "")
+		}
+		ds[key] = vals
 	}
 	return ds
 }

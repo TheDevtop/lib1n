@@ -18,6 +18,10 @@ os=plan9
 ### Operations
 The following operations are supported:
 
+* Concurrent decode -> GoDecode(dataset)
 * Concurrent find -> Find(dataset, pattern)
 * Concurrent replace -> Replace(dataset, pattern, replacement)
 * Procedural map -> Map(dataset, function)
+* Procedural clean -> Clean(dataset)
+* Procedural decode -> Decode(buffer)
+* Procedural encode -> Encode(dataset)
