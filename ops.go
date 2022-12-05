@@ -78,11 +78,20 @@ func Replace(ds DataSet, pattern string, replace string) DataSet {
 }
 
 // Execute function on each dataframe
-func Map(ds DataSet, fn func(df []string) []string) DataSet {
+func MapFilter(ds DataSet, fn func(df []string) []string) DataSet {
 	for key, val := range ds {
 		ds[key] = fn(val)
 	}
 	return ds
+}
+
+// Reduce dataset to single frame via function
+func Reduce(ds DataSet, fn func(key string, df []string) string) []string {
+	var result []string
+	for key, val := range ds {
+		result = append(result, fn(key, val))
+	}
+	return result
 }
 
 // Clean unwanted tokens

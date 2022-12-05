@@ -1,6 +1,7 @@
 package lib1n
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -46,7 +47,7 @@ func TestReplace(t *testing.T) {
 	}
 }
 
-func TestMap(t *testing.T) {
+func TestMapFilter(t *testing.T) {
 	ds := DataSet{
 		"0": {"X", "O", "O"},
 		"1": {"O", "X", "O"},
@@ -62,14 +63,14 @@ func TestMap(t *testing.T) {
 		return df
 	}
 
-	nds := Map(ds, fn)
+	nds := MapFilter(ds, fn)
 
 	check0 := nds["0"][0] == "T"
 	check1 := nds["1"][1] == "T"
 	check2 := nds["2"][2] == "T"
 
 	if check0 && check1 && check2 {
-		t.Log("Mapped successfully")
+		t.Log("Map/Filter applied successfully")
 		return
 	} else {
 		t.Fail()
@@ -91,6 +92,39 @@ func TestClean(t *testing.T) {
 
 	if check0 && check1 && check2 {
 		t.Log("Cleaned succesfully")
+		return
+	} else {
+		t.Fail()
+	}
+}
+
+func TestReduce(t *testing.T) {
+	ds := DataSet{
+		"0": {"1", "2", "3"}, // Sum = 6
+		"1": {"4", "5", "6"}, // Sum = 15
+		"2": {"7", "8", "9"}, // Sum = 24
+	}
+
+	var fn = func(key string, df []string) string {
+		var r int
+		for _, v := range df {
+			if ir, er := strconv.Atoi(v); er != nil {
+				ir = 0
+			} else {
+				r += ir
+			}
+		}
+		return strconv.Itoa(r)
+	}
+
+	df := Reduce(ds, fn)
+
+	check0 := df[0] == "6"
+	check1 := df[1] == "15"
+	check2 := df[2] == "24"
+
+	if check0 && check1 && check2 {
+		t.Log("Reduce applied successfully")
 		return
 	} else {
 		t.Fail()

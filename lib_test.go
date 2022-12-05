@@ -5,19 +5,45 @@ import (
 )
 
 func TestDecode(t *testing.T) {
-	data := "foo=bar;baz\nos=plan9\ntext=lorem;ipsum"
-	if ds, err := Decode([]byte(data)); err != nil {
+	data := "0=X;Y;Z\n1=X;Y;Z\n2=X;Y;Z\n"
+	var (
+		ds  DataSet
+		err error
+	)
+
+	if ds, err = Decode([]byte(data)); err != nil {
 		t.Fatal(err)
+	}
+
+	check0 := ds["0"][0] == "X"
+	check1 := ds["1"][1] == "Y"
+	check2 := ds["2"][2] == "Z"
+
+	if check0 && check1 && check2 {
+		t.Log("Decoded successfully")
+		return
 	} else {
-		t.Logf("%v\n", ds)
+		t.Fail()
 	}
 }
 
 func TestDecodeFail(t *testing.T) {
-	data := "foo=bar;baz\nos=windows\ntext\nlorem=ipsum\n"
-	if ds, err := Decode([]byte(data)); err == nil {
-		t.Logf("ds: %v\n", ds)
-		t.Fatal("This functions should have failed!\n")
+	data := "0=X;Y;Z\nbroken\n2=X;Y;Z\n"
+
+	var (
+		ds  DataSet
+		err error
+	)
+
+	if ds, err = Decode([]byte(data)); err == nil {
+		t.Fail()
+	}
+
+	if ds == nil {
+		t.Log("Failed successfully")
+		return
+	} else {
+		t.Fail()
 	}
 }
 
