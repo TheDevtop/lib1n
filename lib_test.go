@@ -48,29 +48,15 @@ func TestDecodeFail(t *testing.T) {
 }
 
 func TestEncode(t *testing.T) {
-	data := DataSet{
-		"foo":  []string{"bar", "baz"},
-		"os":   []string{"plan9"},
-		"text": []string{"lorem", "ipsum"},
-	}
-	str := string(Encode(data))
-	t.Logf("%s\n", str)
-}
-
-func TestComplete(t *testing.T) {
-	data := DataSet{
-		"foo":  []string{"bar", "baz"},
-		"os":   []string{"plan9"},
-		"text": []string{"lorem", "ipsum"},
+	data := "0=X;O;O\n1=O;X;O\n2=O;O;X\n"
+	ds := DataSet{
+		"0": {"X", "O", "O"},
+		"1": {"O", "X", "O"},
+		"2": {"O", "O", "X"},
 	}
 
-	buf := Encode(data)
-	t.Log("Encoded dataset\n")
-
-	if data, err := Decode(buf); err != nil {
-		t.Fatal(err)
-	} else {
-		t.Logf("%v\n", data)
+	if string(Encode(ds)) != data {
+		t.Fail()
 	}
 }
 
