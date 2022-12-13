@@ -12,12 +12,12 @@ this=Sparta!
 goto=considered harmful
 oop=no
 csp=yes
-os=plan9
 ```
 
 ### Operations
 Concurrent operations:
 * Concurrent decode -> GoDecode(dataset)
+* Concurrent encode -> GoEncode(dataset)
 * Concurrent find -> Find(dataset, pattern)
 * Concurrent replace -> Replace(dataset, pattern, replacement)
 * Concurrent clean -> Clean(dataset)

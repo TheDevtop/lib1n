@@ -1,6 +1,7 @@
 package lib1n
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -56,6 +57,27 @@ func TestEncode(t *testing.T) {
 	}
 
 	if string(Encode(ds)) != data {
+		t.Fail()
+	}
+}
+
+func TestGoEncode(t *testing.T) {
+	ds := DataSet{
+		"0": {"X", "O", "O"},
+		"1": {"O", "X", "O"},
+		"2": {"O", "O", "X"},
+	}
+
+	data := string(GoEncode(ds))
+
+	check0 := strings.Contains(data, "0=X;O;O\n")
+	check1 := strings.Contains(data, "1=O;X;O\n")
+	check2 := strings.Contains(data, "2=O;O;X\n")
+
+	if check0 && check1 && check2 {
+		t.Log("Encoded successfully")
+		return
+	} else {
 		t.Fail()
 	}
 }

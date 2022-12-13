@@ -77,6 +77,29 @@ func Decode(buf []byte) (DataSet, error) {
 }
 
 // Encode DataSet to slice
+// Warning: Concurrent function
+func GoEncode(ds DataSet) []byte {
+	var (
+		strBuf = make([]string, len(ds))
+		chStr  = make(chan string, len(ds))
+	)
+
+	for key, vals := range ds {
+		go func(key string, vals []string) {
+			vstr := strings.Join(vals, tokSep)
+			chStr <- fmt.Sprintf("%s=%s\n", key, vstr)
+		}(key, vals)
+	}
+
+	for i := 0; i < len(ds); i++ {
+		s := <-chStr
+		strBuf[i] = s
+	}
+
+	return []byte(strings.Join(strBuf, ""))
+}
+
+// Encode DataSet to slice
 func Encode(ds DataSet) []byte {
 	var str string
 	for k, df := range ds {
