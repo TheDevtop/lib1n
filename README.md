@@ -20,10 +20,10 @@ Concurrent operations:
 * Concurrent decode -> GoDecode(dataset)
 * Concurrent find -> Find(dataset, pattern)
 * Concurrent replace -> Replace(dataset, pattern, replacement)
+* Concurrent clean -> Clean(dataset)
 
 Procedural operations:
 * Procedural map/filter -> MapFilter(dataset, function)
 * Procedural reduce -> Reduce(dataset, function)
-* Procedural clean -> Clean(dataset)
 * Procedural decode -> Decode(buffer)
 * Procedural encode -> Encode(dataset)

@@ -95,17 +95,36 @@ func Reduce(ds DataSet, fn func(key string, df []string) string) []string {
 }
 
 // Clean unwanted tokens
+// Warning: Concurrent function
 func Clean(ds DataSet) DataSet {
-	for key, vals := range ds {
-		key = strings.ReplaceAll(key, tokEq, "")
-		key = strings.ReplaceAll(key, tokLn, "")
-		key = strings.ReplaceAll(key, tokSep, "")
-		for i, val := range vals {
-			vals[i] = strings.ReplaceAll(val, tokEq, "")
-			vals[i] = strings.ReplaceAll(val, tokLn, "")
-			vals[i] = strings.ReplaceAll(val, tokSep, "")
-		}
-		ds[key] = vals
+	type result struct {
+		key string
+		val []string
 	}
-	return ds
+
+	var (
+		chResult = make(chan result, len(ds))
+		nds      = make(DataSet, len(ds))
+	)
+
+	for key, vals := range ds {
+		go func(key string, vals []string) {
+			key = strings.ReplaceAll(key, tokEq, "")
+			key = strings.ReplaceAll(key, tokLn, "")
+			key = strings.ReplaceAll(key, tokSep, "")
+			for i, val := range vals {
+				vals[i] = strings.ReplaceAll(val, tokEq, "")
+				vals[i] = strings.ReplaceAll(val, tokLn, "")
+				vals[i] = strings.ReplaceAll(val, tokSep, "")
+			}
+			chResult <- result{key: key, val: vals}
+		}(key, vals)
+	}
+
+	// Collect results, and return new dataset
+	for i := 0; i < len(ds); i++ {
+		res := <-chResult
+		nds[res.key] = res.val
+	}
+	return nds
 }
