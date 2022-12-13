@@ -16,7 +16,7 @@ csp=yes
 
 ### Operations
 Concurrent operations:
-* Concurrent decode -> GoDecode(dataset)
+* Concurrent decode -> GoDecode(buffer)
 * Concurrent encode -> GoEncode(dataset)
 * Concurrent find -> Find(dataset, pattern)
 * Concurrent replace -> Replace(dataset, pattern, replacement)
