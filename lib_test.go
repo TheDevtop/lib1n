@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// Test decoding of simple data
 func TestDecode(t *testing.T) {
 	data := "0=X;Y;Z\n1=X;Y;Z\n2=X;Y;Z\n"
 	var (
@@ -28,6 +29,8 @@ func TestDecode(t *testing.T) {
 	}
 }
 
+// Test decoding of broken data
+// Test should fail
 func TestDecodeFail(t *testing.T) {
 	data := "0=X;Y;Z\nbroken\n2=X;Y;Z\n"
 
@@ -48,6 +51,7 @@ func TestDecodeFail(t *testing.T) {
 	}
 }
 
+// Test encoding of simple data
 func TestEncode(t *testing.T) {
 	data := "0=X;O;O\n1=O;X;O\n2=O;O;X\n"
 	ds := DataSet{
@@ -61,6 +65,7 @@ func TestEncode(t *testing.T) {
 	}
 }
 
+// Test concurrent encoding of simple data
 func TestGoEncode(t *testing.T) {
 	ds := DataSet{
 		"0": {"X", "O", "O"},
@@ -82,6 +87,7 @@ func TestGoEncode(t *testing.T) {
 	}
 }
 
+// Test concurrent decoding of simple data
 func TestGoDecode(t *testing.T) {
 	data := "0=X;Y;Z\n1=X;Y;Z\n2=X;Y;Z\n"
 	ds := GoDecode([]byte(data))
@@ -98,6 +104,8 @@ func TestGoDecode(t *testing.T) {
 	}
 }
 
+// Test concurrent decoding of broken data
+// Test should fail
 func TestGoDecodeFail(t *testing.T) {
 	data := "0=X;Y;Z\nbroken\n2=X;Y;Z\n"
 	ds := GoDecode([]byte(data))

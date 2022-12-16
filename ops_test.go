@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+// Test find function
+// Find the letter 'X'
 func TestFind(t *testing.T) {
 	ds := DataSet{
 		"0": {"X", "O", "O"},
@@ -26,6 +28,8 @@ func TestFind(t *testing.T) {
 	}
 }
 
+// Test replace function
+// Replace all 'X' with 'T'
 func TestReplace(t *testing.T) {
 	ds := DataSet{
 		"0": {"X", "O", "O"},
@@ -47,6 +51,8 @@ func TestReplace(t *testing.T) {
 	}
 }
 
+// Test map function
+// Perform higher-order replace on data, replace all 'X' with 'T'
 func TestMapFilter(t *testing.T) {
 	ds := DataSet{
 		"0": {"X", "O", "O"},
@@ -77,6 +83,8 @@ func TestMapFilter(t *testing.T) {
 	}
 }
 
+// Test clean functions
+// Remove ambiguous tokens
 func TestClean(t *testing.T) {
 	ds := DataSet{
 		"0":  {"X", "O", "O"},
@@ -98,6 +106,8 @@ func TestClean(t *testing.T) {
 	}
 }
 
+// Test reduce function
+// Perform higher-order sum on data
 func TestReduce(t *testing.T) {
 	ds := DataSet{
 		"0": {"1", "2", "3"}, // Sum = 6
